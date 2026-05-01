@@ -26,7 +26,7 @@ if st.button("Enhance with AI"):
                 
                 # Sending the request to the Llama 3 model
                 completion = client.chat.completions.create(
-                    model="llama3-8b-8192",
+                    model="llama-3.1-8b-instant",
                     messages=[{"role": "user", "content": prompt}]
                 )
                 
