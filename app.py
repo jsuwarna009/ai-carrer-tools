@@ -1,26 +1,40 @@
 import streamlit as st
-from groq import Groq # Or openai if using OpenAI
 import os
+from groq import Groq
 from dotenv import load_dotenv
 
+# 1. Load the API Key from your .env file
 load_dotenv()
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
+st.set_page_config(page_title="AI Resume Polisher", page_icon="🤖")
+
 st.title("🤖 AI Resume Polisher")
+st.markdown("Bridge your career gap by highlighting your impact.")
 
-job_title = st.text_input("Target Job Title")
-bullet_point = st.text_area("Paste a resume bullet point:")
+# 2. User Input Fields
+job_title = st.text_input("Target Job Title", placeholder="e.g., Senior Software Engineer")
+bullet_point = st.text_area("Paste a resume bullet point:", placeholder="e.g., I worked on a health insurance app.")
 
+# 3. The Logic
 if st.button("Enhance with AI"):
     if bullet_point and job_title:
-        # The AI Prompt
-        prompt = f"Rewrite this resume bullet point for a {job_title} role to sound more impactful and professional: {bullet_point}"
-        
-        completion = client.chat.completions.create(
-            model="llama3-8b-8192",
-            messages=[{"role": "user", "content": prompt}]
-        )
-        
-        st.success(completion.choices[0].message.content)
+        with st.spinner("AI is polishing your achievement..."):
+            try:
+                # This is the "Prompt" - how we talk to the AI
+                prompt = f"You are an expert career coach. Rewrite the following resume bullet point for a {job_title} role. Use strong action verbs and focus on quantifiable impact. Keep it to one powerful sentence: {bullet_point}"
+                
+                # Sending the request to the Llama 3 model
+                completion = client.chat.completions.create(
+                    model="llama3-8b-8192",
+                    messages=[{"role": "user", "content": prompt}]
+                )
+                
+                # Display the result
+                st.success("### Suggested Revision:")
+                st.write(completion.choices[0].message.content)
+                
+            except Exception as e:
+                st.error(f"An error occurred: {e}")
     else:
-        st.error("Please fill in both fields!")
+        st.warning("Please provide both a job title and a bullet point.")
