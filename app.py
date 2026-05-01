@@ -10,6 +10,13 @@ client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 st.set_page_config(page_title="AI Resume Polisher", page_icon="🤖")
 
 st.title("🤖 AI Resume Polisher")
+with st.sidebar:
+    st.title("👨‍💻 Project Info")
+    st.markdown("Developed by **Your Name**")
+    st.markdown("[LinkedIn](https://www.linkedin.com/in/jahnavi-suwarna/)")
+    st.markdown("[GitHub](https://github.com/jsuwarna009)")
+    st.divider()
+    st.info("Built with Llama 3.1 & Streamlit")
 st.markdown("Bridge your career gap by highlighting your impact.")
 
 # 2. User Input Fields
